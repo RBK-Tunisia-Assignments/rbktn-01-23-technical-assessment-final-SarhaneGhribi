@@ -1,7 +1,15 @@
 const express = require("express");
-const router = express.Router();
+const rrouter = express.Router();
+const{getrecepie,postrecepie,updaterecepie,deleterecepie}=require("../controller/recipiesController")
 
-router.get("/",);
 
 
-module.exports = router;
+rrouter.get("/",getrecepie);
+rrouter.post("/",postrecepie)
+rrouter.patch("/:recepie_Name",updaterecepie)
+rrouter.delete("/:recepie_Name",deleterecepie)
+
+
+
+
+module.exports = rrouter;

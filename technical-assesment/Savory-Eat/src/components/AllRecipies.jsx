@@ -1,126 +1,99 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios"
 import "../index.scss";
-const AllRecepies = () => {
-  return (
-    <div className="card-container">
-    
-      <div className="card">
-        <button className="delete">delete</button>
-        <button className="update">update </button>
-
-        <>
-          <div className="header">
-            <img
-              className="img"
-              src="https://images.unsplash.com/photo-1594007654729-407eedc4be65?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGl6emF8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-              alt="food"
-            />
-          </div>
-          <div className="text">
-            <h1 className="food">Pizza</h1>
-            <i> 25 Mins</i> <br />
-            <i> Serves: 5 </i>
-          </div>
-        </>
-      </div>
-      <div className="card">
-        <button className="delete">delete</button>
-        <button className="update">update </button>
-
-        <>
-          <div className="header">
-            <img
-              className="img"
-              src="https://images.unsplash.com/photo-1611270629569-8b357cb88da9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8cGFzdGF8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-              alt="food"
-            />
-           
-          </div>
-          <div className="text">
-            <h1 className="food">Pasta</h1>
-            <i> 30 Mins</i> <br />
-            <i> Serves : 4 </i>
-          </div>
-        </>
-      </div>
-      <div className="card">
-        <button className="delete">delete</button>
-        <button className="update">update </button>
-
-        <>
-          <div className="header">
-            <img
-              className="img"
-              src="https://images.unsplash.com/photo-1618449840665-9ed506d73a34?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Y3VycnklMjBjaGlja2VufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-              alter=""
-            />
-          </div>
-          <div className="text">
-            <h1 className="food">Curry chicken</h1>
-            <i> 45 Mins</i> <br />
-            <i>Serves : 4  </i>
-          </div>
-        </>
-      </div>
-      <div className="card">
-        <button className="delete">delete</button>
-        <button className="update">update </button>
-
-        <>
-          <div className="header">
-            <img
-              className="img"
-              src="https://images.unsplash.com/photo-1512058556646-c4da40fba323?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8c3RpciUyMGZyeXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-              alt="food"
-            />
-          </div>
-          <div className="text">
-            <h1 className="food">Stir-Fry</h1>
-            <i> 40 Mins</i> <br />
-            <i>Serves : 3 </i>
-          </div>
-        </>
-      </div>
-      <div className="card">
-        <button className="delete">delete</button>
-        <button className="update">update </button>
-
-        <>
-          <div className="header">
-            <img
-              className="img"
-              src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cm9hc3RlZCUyMGNoaWNrZW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-              alt="food"
-            />
-           
-          </div>
-          <div className="text">
-            <h1 className="food">Roasted Chicken</h1>
-            <i> 425 Mins</i> <br />
-            <i>Serves : 6 </i>
-          </div>
-        </>
-      </div>
-      <div className="card">
-        <button className="delete">delete</button>
-        <button className="update">update </button>
-
-        <>
-          <div className="header">
-            <img
-              className="img"
-              src="https://images.unsplash.com/photo-1548869206-93b036288d7e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8YmVlZiUyMHN0aXIlMjBmcnl8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-              alt="food"
-            />
-          </div>
-          <div className="text">
-            <h1 className="food">Beef Stir Fry</h1>
-            <i> 40 Mins</i> <br />
-            <i>Serves : 2 </i>
-          </div>
-        </>
-      </div>
+const AllRecepies = ({data,changeView,fetchData}) => {
+  const[name,setName]=useState("")
+  const[cTime,setcTime]=useState(null)
+  const[pTime,setpTime]=useState(null)
+  const[serves,setServes]=useState(null)
+  const[category,setCategory]=useState("")
+  const[description,setDescription]=useState("")
+  const[ingridients,setIngridients]=useState("")
+  const[img,setImg]=useState("")
+  const [details,setDetails]=useState(false)
+ 
+console.log(data)
+  const handelDelete=(Dname)=>{
+  axios.delete(`http://localhost:4000/${Dname}`)
+  .then(suc=>console.log(suc))
+  .catch(err=>console.log(err))  
+  }
   
+  const handelSubmit=(update)=>{
+    axios.patch(`http://localhost:4000/${update}`,{ 
+      Cook_Time: cTime,
+      Prep_Time:pTime,
+      recepie_Name:name,
+      Serves:serves,
+      categorie:category,
+      recepie_Image:img,
+      recepie_Description :description,
+      recepie_Ingredients: ingridients,
+      users_user_Id:1
+    })
+    .then(suc=>{console.log(suc)
+     setDetails(false)
+    fetchData()})
+    .catch(err=>console.log(err))
+      }
+  return (
+   <div className="card-container">
+    
+    {data.map((e,i)=>(<div className="card" key={i} >
+        <button className="delete" onClick={()=>handelDelete(e.recepie_Name)}>delete</button>
+        <button className="update" onClick={()=>setDetails(true)}>update </button>
+
+        <>
+          <div className="header">
+            <img
+              className="img"
+              src={e.recepie_Image}
+              alt="food"
+            />
+          </div>
+          <div className="text">
+            <h1 className="food" >{e.recepie_Name}</h1>
+            <i>{e.Cook_Time}</i> <br />
+            <i> Serves:{e.Serves}</i>
+          </div>
+        </>
+        {details ? <div className="add-recipe-form ">
+      <div className="form-group">
+        <label>Name:</label>
+        <input type="text" defaultValue={e.recepie_Name} placeholder="Name" onChange={e=>setName(e.target.value)} />
+      </div>
+      <div className="form-group">
+        <label>Cook Time:</label>
+        <input type="number" defaultValue={e.Cook_Time} placeholder="Cooking Time" onChange={e=>setcTime(e.target.value)} />
+      </div>
+      <div className="form-group">
+        <label>Prep Time:</label>
+        <input type="number" defaultValue={e.Prep_Time} placeholder="Preparation Time" onChange={e=>setpTime(e.target.value)}/>
+      </div>
+      <div className="form-group">
+        <label>Serves:</label>
+        <input type="number" defaultValue={e.Serves} placeholder="serves" onChange={e=>setServes(e.target.value)}/>
+      </div>
+      <div className="form-group">
+        <label>Category:</label>
+        <input type="text" defaultValue={e.categorie} placeholder="Category" onChange={e=>setCategory(e.target.value)}/>
+      </div>
+      <div className="form-group">
+        <label>Description:</label>
+        <input type="text" defaultValue={e.recepie_Description} placeholder="Description" onChange={e=>setDescription(e.target.value)}/>
+      </div>
+      <div className="form-group">
+        <label>Ingredients:</label>
+        <input placeholder="Ingredients" defaultValue={e.recepie_Description} onChange={e=>setIngridients(e.target.value)}/>
+      </div>
+
+      <div className="form-group">
+        <label>Image:</label>
+        <input type="text" defaultValue={e.recepie_Image} placeholder="Image URL"onChange={e=>setImg(e.target.value)} />
+      </div>
+      <button className="create-recipe-btn" onClick={()=>handelSubmit(e.recepie_Name)}>UPDATE</button>
+    </div>:null}
+      </div>))}
     </div>
   );
 };
